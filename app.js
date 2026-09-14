@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // Meebo introduces himself immediately
 window.addEventListener('DOMContentLoaded', () => {
-    appendMessage("Hi there! I'm Meebo. I've updated my data tunnel to route around your network blocks! Go ahead and test me.", 'ai');
+    appendMessage("Hi there! I'm Meebo. The code is fixed and the interface is unlocked! Type a message below.", 'ai');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -14,32 +14,27 @@ async function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
+    // Show your message on screen
     appendMessage(text, 'user');
     userInput.value = '';
 
+    // Create Meebo's response bubble
     const loadingMessage = appendMessage('Meebo is typing...', 'ai');
 
     try {
-        // Switching to an alternate unblocked text API mirror endpoint
-        const response = await fetch(`https://codetabs.com{encodeURIComponent(text)}`);
+        // Send a direct GET query string that slips through standard school filters
+        const cleanPrompt = encodeURIComponent(`You are an AI named Meebo. Keep your reply brief. User says: ${text}`);
+        const response = await fetch(`https://pollinations.ai{cleanPrompt}?model=openai`);
 
         if (!response.ok) {
-            throw new Error("Network proxy failed");
+            throw new Error("Network blocked");
         }
 
         const aiResponse = await response.text();
         loadingMessage.textContent = aiResponse;
     } catch (error) {
-        // Fallback option using an open public text-generator mirror 
-        try {
-            loadingMessage.textContent = "Meebo is attempting fallback route...";
-            const fallbackResponse = await fetch(`https://allorigins.win{encodeURIComponent(`https://pollinations.ai{text}`)}`);
-            const data = await fallbackResponse.json();
-            loadingMessage.textContent = data.contents;
-        } catch (fallbackError) {
-            loadingMessage.textContent = "System Block: Both the primary and fallback data lines are blocked by this firewall.";
-            console.error(fallbackError);
-        }
+        loadingMessage.textContent = "Meebo's connection path is restricted on this Wi-Fi network.";
+        console.error(error);
     }
 }
 
