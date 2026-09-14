@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // Meebo introduces himself immediately
 window.addEventListener('DOMContentLoaded', () => {
-    appendMessage("Hi there! I'm Meebo, your cloud companion. I'm bypassing your Chromebook restrictions completely! Ask me anything.", 'ai');
+    appendMessage("Hi there! I'm Meebo. I've updated my data tunnel to route around your network blocks! Go ahead and test me.", 'ai');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -20,26 +20,26 @@ async function sendMessage() {
     const loadingMessage = appendMessage('Meebo is typing...', 'ai');
 
     try {
-        // Send a native web fetch request to Pollinations public AI network
-        const response = await fetch('https://pollinations.ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                messages: [
-                    { role: "system", content: "Your name is Meebo. You are a cheerful, friendly, and helpful AI buddy." },
-                    { role: "user", content: text }
-                ],
-                model: "openai" // Uses standard optimized LLM processing
-            })
-        });
+        // Switching to an alternate unblocked text API mirror endpoint
+        const response = await fetch(`https://codetabs.com{encodeURIComponent(text)}`);
 
-        // The endpoint directly outputs plain text response structure
+        if (!response.ok) {
+            throw new Error("Network proxy failed");
+        }
+
         const aiResponse = await response.text();
-        
         loadingMessage.textContent = aiResponse;
     } catch (error) {
-        loadingMessage.textContent = "Oops! Your school/work network blocks this data request path.";
-        console.error(error);
+        // Fallback option using an open public text-generator mirror 
+        try {
+            loadingMessage.textContent = "Meebo is attempting fallback route...";
+            const fallbackResponse = await fetch(`https://allorigins.win{encodeURIComponent(`https://pollinations.ai{text}`)}`);
+            const data = await fallbackResponse.json();
+            loadingMessage.textContent = data.contents;
+        } catch (fallbackError) {
+            loadingMessage.textContent = "System Block: Both the primary and fallback data lines are blocked by this firewall.";
+            console.error(fallbackError);
+        }
     }
 }
 
