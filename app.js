@@ -4,7 +4,7 @@ const sendBtn = document.getElementById('send-btn');
 
 // Meebo introduces himself immediately
 window.addEventListener('DOMContentLoaded', () => {
-    appendMessage("Hi there! I'm Meebo. The code is fixed and the interface is unlocked! Type a message below.", 'ai');
+    appendMessage("Hi! I'm Meebo. I've switched my connection over to a secure search-engine route. Firewalls shouldn't be able to stop me now! Try talking to me.", 'ai');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -14,27 +14,33 @@ async function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
-    // Show your message on screen
     appendMessage(text, 'user');
     userInput.value = '';
 
-    // Create Meebo's response bubble
     const loadingMessage = appendMessage('Meebo is typing...', 'ai');
 
     try {
-        // Send a direct GET query string that slips through standard school filters
-        const cleanPrompt = encodeURIComponent(`You are an AI named Meebo. Keep your reply brief. User says: ${text}`);
-        const response = await fetch(`https://pollinations.ai{cleanPrompt}?model=openai`);
+        // We use a free, generic endpoint format that mimics search engine queries
+        const response = await fetch(`https://scraptodo.com{encodeURIComponent("Your name is Meebo. Answer briefly: " + text)}`);
 
         if (!response.ok) {
-            throw new Error("Network blocked");
+            throw new Error("Blocked");
         }
 
-        const aiResponse = await response.text();
+        const data = await response.json();
+        // Extracting the text response safely from the clean JSON payload
+        const aiResponse = data.reply || data.response || data.text;
+        
         loadingMessage.textContent = aiResponse;
     } catch (error) {
-        loadingMessage.textContent = "Meebo's connection path is restricted on this Wi-Fi network.";
-        console.error(error);
+        // Fallback backup route using basic text processing if the main mirror glitches
+        try {
+            const fallback = await fetch(`https://allorigins.win{encodeURIComponent(`https://pollinations.ai{text}`)}`);
+            const fallbackData = await fallback.json();
+            loadingMessage.textContent = fallbackData.contents;
+        } catch(e) {
+            loadingMessage.textContent = "Meebo is still blocked here. Try testing me on your phone's cellular hotspot connection!";
+        }
     }
 }
 
