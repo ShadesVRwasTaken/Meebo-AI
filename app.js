@@ -2,9 +2,9 @@ const messagesContainer = document.getElementById('messages');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
-// Meebo warmly greets the user instantly on load
+// Meebo introduces himself immediately
 window.addEventListener('DOMContentLoaded', () => {
-    appendMessage("Hello! I am Meebo. I am awake, fully free, and ready to go! How can I help you?", 'ai');
+    appendMessage("Hi there! I'm Meebo, your cloud companion. I'm bypassing your Chromebook restrictions completely! Ask me anything.", 'ai');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -20,15 +20,25 @@ async function sendMessage() {
     const loadingMessage = appendMessage('Meebo is typing...', 'ai');
 
     try {
-        // Construct clear identity guidelines inside the context envelope
-        const identityPrompt = `Your name is Meebo. You are a cheerful, friendly, and helpful AI companion. Respond to this: ${text}`;
+        // Send a native web fetch request to Pollinations public AI network
+        const response = await fetch('https://pollinations.ai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                messages: [
+                    { role: "system", content: "Your name is Meebo. You are a cheerful, friendly, and helpful AI buddy." },
+                    { role: "user", content: text }
+                ],
+                model: "openai" // Uses standard optimized LLM processing
+            })
+        });
+
+        // The endpoint directly outputs plain text response structure
+        const aiResponse = await response.text();
         
-        // Puter API executes the text completion smoothly over standard network endpoints
-        const response = await puter.ai.chat(identityPrompt);
-        
-        loadingMessage.textContent = response;
+        loadingMessage.textContent = aiResponse;
     } catch (error) {
-        loadingMessage.textContent = "Meebo had trouble responding. Please check your internet connection.";
+        loadingMessage.textContent = "Oops! Your school/work network blocks this data request path.";
         console.error(error);
     }
 }
@@ -41,4 +51,3 @@ function appendMessage(text, sender) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     return msgDiv;
 }
-
