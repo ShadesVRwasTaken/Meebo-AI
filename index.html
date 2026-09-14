@@ -7,24 +7,24 @@
     <style>
         body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         #chat-container { width: 400px; height: 550px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-        #chat-header { background: #E91E63; color: white; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; }
+        #chat-header { background: #3F51B5; color: white; padding: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; }
         #messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         .message { padding: 10px 14px; border-radius: 8px; max-width: 75%; font-size: 0.95rem; line-height: 1.4; }
-        .user { background: #E91E63; color: white; align-self: flex-end; }
+        .user { background: #3F51B5; color: white; align-self: flex-end; }
         .ai { background: #e9ecef; color: #333; align-self: flex-start; }
         #input-area { display: flex; border-top: 1px solid #ddd; background: #fff; }
         #user-input { flex: 1; padding: 15px; border: none; outline: none; font-size: 0.95rem; }
-        #send-btn { padding: 15px 20px; background: #E91E63; color: white; border: none; cursor: pointer; font-weight: bold; }
-        #send-btn:hover { background: #c2185b; }
+        #send-btn { padding: 15px 20px; background: #3F51B5; color: white; border: none; cursor: pointer; font-weight: bold; }
+        #send-btn:hover { background: #303f9f; }
     </style>
 </head>
 <body>
 
 <div id="chat-container">
-    <div id="chat-header">🤖 Meebo AI</div>
+    <div id="chat-header">🤖 Meebo Research AI</div>
     <div id="messages"></div>
     <div id="input-area">
-        <input type="text" id="user-input" placeholder="Say hi to Meebo...">
+        <input type="text" id="user-input" placeholder="Ask Meebo to explain something...">
         <button id="send-btn">Send</button>
     </div>
 </div>
