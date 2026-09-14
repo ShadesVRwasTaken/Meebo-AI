@@ -41,3 +41,4 @@ function appendMessage(text, sender) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
     return msgDiv;
 }
+
